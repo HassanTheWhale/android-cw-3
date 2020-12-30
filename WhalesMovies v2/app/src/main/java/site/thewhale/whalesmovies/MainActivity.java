@@ -16,25 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView
-                ParentRecyclerViewItem
-                = findViewById(
-                R.id.parent_recyclerview);
 
-            LinearLayoutManager
-                    layoutManager
-                    = new LinearLayoutManager(
-                    MainActivity.this);
-
-            ParentItemAdapter
-                    parentItemAdapter
-                    = new ParentItemAdapter(
-                    ParentItemList());
-
-            ParentRecyclerViewItem
-                    .setAdapter(parentItemAdapter);
-            ParentRecyclerViewItem
-                    .setLayoutManager(layoutManager);
 
 
         ArrayList<Movies> moviesArrayList = new ArrayList<Movies>();
@@ -59,6 +41,28 @@ public class MainActivity extends AppCompatActivity {
                         "2005", "157 min",
                         "7.7", "https://www.imdb.com/title/tt0330373/?ref_=ttls_li_tt"));
 
+        ArrayList<Movies> moviesArrayList2 = new ArrayList<Movies>();
+        moviesArrayList2.add(
+                new Movies("The Avengers ", R.drawable.aven,
+                        "Earth's mightiest heroes must come together and learn to fight as a team if they are going to stop the mischievous Loki and his alien army from enslaving humanity.",
+                        "2012", "143 min",
+                        "8", "https://www.imdb.com/title/tt0848228/?ref_=ttls_li_i"));
+        moviesArrayList2.add(
+                new Movies("Avengers: Age of Ultron", R.drawable.avenb,
+                        "When Tony Stark and Bruce Banner try to jump-start a dormant peacekeeping program called Ultron, things go horribly wrong and it's up to Earth's mightiest heroes to stop the villainous Ultron from enacting his terrible plan.",
+                        "2015", "141 min",
+                        "7.3", "https://www.imdb.com/title/tt2395427/?ref_=ttls_li_i"));
+        moviesArrayList2.add(
+                new Movies("Avengers: Infinity War", R.drawable.avenc,
+                        "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.",
+                        "2018", "149 min",
+                        "8.4", "https://www.imdb.com/title/tt4154756/?ref_=ttls_li_i"));
+        moviesArrayList2.add(
+                new Movies("Avengers: Endgame", R.drawable.avend,
+                        "After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+                        "2019", "181 min",
+                        "8.4", "https://www.imdb.com/title/tt4154796/?ref_=ttls_li_i"));
+
 
         RecyclerView rView = findViewById(R.id.rView);
 
@@ -66,11 +70,40 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rView.setLayoutManager(lm);
 
+        ArrayList<MovieAdapter> moviesAdapterList = new ArrayList<MovieAdapter>();
+
         MovieAdapter movieAdapter = new MovieAdapter(moviesArrayList, MainActivity.this);
+        MovieAdapter movieAdapter2 = new MovieAdapter(moviesArrayList2, MainActivity.this);
+
+        moviesAdapterList.add(movieAdapter);
+        moviesAdapterList.add(movieAdapter2);
+
         rView.setAdapter(movieAdapter);
+
+        //---------------
+
+        ParentItemAdapter
+                parentItemAdapter
+                = new ParentItemAdapter( ParentItemList(moviesAdapterList), MainActivity.this);
+
+
+        RecyclerView
+                ParentRecyclerViewItem
+                = findViewById(
+                R.id.parent_recyclerview);
+
+        LinearLayoutManager
+                layoutManager
+                = new LinearLayoutManager(
+                MainActivity.this);
+
+        ParentRecyclerViewItem
+                .setAdapter(parentItemAdapter);
+        ParentRecyclerViewItem
+                .setLayoutManager(layoutManager);
     }
 
-    private List<ParentItem> ParentItemList()
+    private List<ParentItem> ParentItemList(ArrayList<MovieAdapter> list)
     {
         List<ParentItem> itemList
                 = new ArrayList<>();
@@ -78,22 +111,20 @@ public class MainActivity extends AppCompatActivity {
         ParentItem item
                 = new ParentItem(
                 "Movies Series",
-                ChildItemList());
+                ChildItemList(list));
         itemList.add(item);
 
 
         return itemList;
     }
 
-    private List<ChildItem> ChildItemList()
+    private List<ChildItem> ChildItemList(ArrayList<MovieAdapter> list)
     {
         List<ChildItem> ChildItemList
                 = new ArrayList<>();
 
-        ChildItemList.add(new ChildItem("Harry Potter", R.drawable.hpa));
-        ChildItemList.add(new ChildItem("Part 2", R.drawable.hpb));
-        ChildItemList.add(new ChildItem("Part 3", R.drawable.hpc));
-        ChildItemList.add(new ChildItem("Part 4",R.drawable.hpd));
+        ChildItemList.add(new ChildItem("Harry Potter", R.drawable.hpa, list.get(0)));
+        ChildItemList.add(new ChildItem("The Avengers", R.drawable.aven, list.get(1)));
 
         return ChildItemList;
     }

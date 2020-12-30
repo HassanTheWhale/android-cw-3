@@ -2,11 +2,16 @@ package site.thewhale.whalesmovies;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,11 +20,13 @@ class ChildItemAdapter
         .Adapter<ChildItemAdapter.ChildViewHolder> {
 
     private List<ChildItem> ChildItemList;
+    private Context context;
 
     // Constuctor
-    ChildItemAdapter(List<ChildItem> childItemList)
+    ChildItemAdapter(List<ChildItem> childItemList, Context context)
     {
         this.ChildItemList = childItemList;
+        this.context = context;
     }
 
     @NonNull
@@ -55,6 +62,14 @@ class ChildItemAdapter
                 .ChildItemPic
                 .setImageResource(childItem.getChildItemPic());
 
+        ((ChildItemAdapter.ChildViewHolder) childViewHolder).view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerView rView = (RecyclerView) ((Activity)context).findViewById(R.id.rView);
+                rView.setAdapter(ChildItemList.get(position).getMovie());
+            }
+        });
+
     }
 
     @Override
@@ -69,10 +84,13 @@ class ChildItemAdapter
 
         TextView ChildItemTitle;
         ImageView ChildItemPic;
+        public View view;
+
 
         ChildViewHolder(View itemView)
         {
             super(itemView);
+            view = itemView;
             ChildItemTitle
                     = itemView.findViewById(
                     R.id.child_item_title);

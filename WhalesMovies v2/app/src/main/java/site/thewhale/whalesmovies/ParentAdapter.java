@@ -3,6 +3,8 @@ package site.thewhale.whalesmovies;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +21,12 @@ class ParentItemAdapter
             = new RecyclerView
             .RecycledViewPool();
     private List<ParentItem> itemList;
+    private Context context;
 
-    ParentItemAdapter(List<ParentItem> itemList)
+    ParentItemAdapter(List<ParentItem> itemList, Context context)
     {
         this.itemList = itemList;
+        this.context = context;
     }
 
     @NonNull
@@ -69,9 +73,7 @@ class ParentItemAdapter
                                 .size());
 
         ChildItemAdapter childItemAdapter
-                = new ChildItemAdapter(
-                parentItem
-                        .getChildItemList());
+                = new ChildItemAdapter(parentItem.getChildItemList(), context);
         parentViewHolder
                 .ChildRecyclerView
                 .setLayoutManager(layoutManager);
